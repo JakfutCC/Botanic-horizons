@@ -1,5 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import com.cardinalstar.cubicchunks.world.ICubicWorld;
+import cpw.mods.fml.common.Loader;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -98,7 +100,8 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
 
     // Dump output downward
     public void handleOutputs() {
-        if (yCoord < 1) return;
+        int minHeight = Loader.isModLoaded("cubicchunks") ? CubicWorldBounds.getMinHeight(worldObj) : 0;
+        if (yCoord <= minHeight) return;
 
         for (int slot = INPUT_SIZE; slot < INPUT_SIZE + OUTPUT_SIZE; slot++) {
             final ItemStack stack = inventoryHandler.getStackInSlot(slot);
@@ -112,6 +115,12 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
             } else if (worldObj.isAirBlock(xCoord, yCoord - 1, zCoord)) {
                 // TODO: drop items in world
             }
+        }
+    }
+
+    private static final class CubicWorldBounds {
+        static int getMinHeight(World world) {
+            return ((ICubicWorld) world).getMinHeight();
         }
     }
 
