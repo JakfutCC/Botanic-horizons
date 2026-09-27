@@ -102,6 +102,9 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
     public void handleOutputs() {
         int minHeight = Loader.isModLoaded("cubicchunks") ? CubicWorldBounds.getMinHeight(worldObj) : 0;
         if (yCoord <= minHeight) return;
+        if (Loader.isModLoaded("cubicchunks")
+                && (!worldObj.checkChunksExist(xCoord, yCoord - 1, zCoord, xCoord, yCoord - 1, zCoord)
+                || !worldObj.blockExists(xCoord, yCoord - 1, zCoord))) return;
 
         for (int slot = INPUT_SIZE; slot < INPUT_SIZE + OUTPUT_SIZE; slot++) {
             final ItemStack stack = inventoryHandler.getStackInSlot(slot);

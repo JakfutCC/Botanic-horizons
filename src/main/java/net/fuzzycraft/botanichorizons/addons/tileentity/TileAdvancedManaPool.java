@@ -1,6 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,6 +99,9 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
         int poolX = xCoord - 4 * facing.dx;
         int poolZ = zCoord - 4 * facing.dz;
         int poolY = yCoord + 1;
+        if (Loader.isModLoaded("cubicchunks")
+                && (!worldObj.checkChunksExist(poolX, poolY, poolZ, poolX, poolY, poolZ)
+                || !worldObj.blockExists(poolX, poolY, poolZ))) return null;
         TileEntity rawPoolTE = worldObj.getTileEntity(poolX, poolY, poolZ);
         if (rawPoolTE instanceof TilePool pool) {
             return pool;
